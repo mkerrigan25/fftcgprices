@@ -8,7 +8,7 @@ def get_db():
     return db
 
 def add_card(db, cardname, cardnum):
-    db.cards.insert({"cardname" : cardname, "cardnum" : cardnum, "store" : "trollandtoad.com"})
+    db.cards.update({"cardnum" : cardnum}, {"$set": {"cardname" : cardname, "cardnum" : cardnum, "store" : "trollandtoad.com"} }, upsert=True)
 
 db = get_db()
 response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10283.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
@@ -24,7 +24,8 @@ for tag in divTag:
 			print("This is a foil")
 		else:	
 			print(imgTag.find('img')['alt'])
-			add_card(db, title.split(" - ")[0], title.split(" - ")[1])
+			cardname, cardnum, _ = title.split(" - ")
+			add_card(db, cardname, cardnum)
 			print(imgTag.find('a')['href'])
 			print(imgTag.find('img')['src'])
 			print(tag.find(class_="quantity_text").text)
