@@ -8,7 +8,7 @@ def get_db():
     return db
 
 def add_card(db, cardname, cardnum):
-    db.cards.insert({"cardname" : cardname, "cardnum" : cardnum, "store": "fftcgsingles.com"})
+    db.cards.update({"cardnum" : cardnum}, {"$set": {"cardname" : cardname, "cardnum" : cardnum, "store" : "fftcgsingles.com"} }, upsert=True)
 
 db = get_db()
 response = requests.get("https://fftcgsingles.co.uk/collections/all")
@@ -31,8 +31,9 @@ for tag in divTag:
 		if "FOIL" in name:
 			print("this is a foil")
 		else:
+			
+			name=name.split(" ", 1)
 			print(name)
-			name.split(" ", 1)
 			add_card(db, name[1], name[0])
 			print(tag.find(class_="product-price__price").text)
 			print(tag.find('a')['href'])
