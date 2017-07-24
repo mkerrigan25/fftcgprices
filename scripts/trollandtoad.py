@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 def get_db():
     from pymongo import MongoClient
-    client = MongoClient('localhost:27017')
+    client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
     db = client.fftcg
     return db
 
@@ -23,11 +23,17 @@ for tag in divTag:
 		if "Foil" in title.split(" - ")[2]:
 			print("This is a foil")
 		else:	
-			print(imgTag.find('img')['alt'])
-			cardname, cardnum, _ = title.split(" - ")
+			#print(imgTag.find('img')['alt'])
+			cardname, cardnum, rarity = title.split(" - ")
+			if cardnum[-1].isdigit():
+				print cardnum[-1]
+				print rarity
+				print rarity[0]
+				cardnum = cardnum + rarity[0]
+				print cardnum
 			add_card(db, cardname, cardnum)
-			print(imgTag.find('a')['href'])
-			print(imgTag.find('img')['src'])
-			print(tag.find(class_="quantity_text").text)
-			print(tag.find(class_="price_text").text)
+			#print(imgTag.find('a')['href'])
+			#print(imgTag.find('img')['src'])
+			#print(tag.find(class_="quantity_text").text)
+			#print(tag.find(class_="price_text").text)
 		
