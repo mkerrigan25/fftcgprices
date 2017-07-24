@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}" />
+</head>
+
+<body>
+
+<div id="content">
+	<table style= "width=100%"> 
+		<tr>  
+			<th>site</th> 
+			<th>card name</th> 
+			<th>card num</th> 
+			<th>id</th>
+		</tr>
+
+  		{% for r in results %}
+			<tr>
+				<td>{{  r.site  }}</td>
+				<td> {{ r.cardname  }}</td>
+				<td>{{  r.cardnum }}</td>
+			</tr>
+		{% endfor %}
+
+</div>
+
+</body>
+</html>
