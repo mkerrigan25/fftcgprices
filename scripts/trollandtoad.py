@@ -8,10 +8,10 @@ def get_db():
     return db
 
 def add_card(db, cardname, cardnum):
-    db.cards.insert({"cardname" : cardname, "cardnum" : cardnum})
+    db.cards.insert({"cardname" : cardname, "cardnum" : cardnum, "store" : "trollandtoad.com"})
 
 db = get_db()
-response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10439.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
+response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10283.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
 html = response.text
 soup = BeautifulSoup(html, 'html.parser')
 divTag = soup.find_all(class_="cat_result_wrapper")
