@@ -27,7 +27,7 @@ for tag in divTag:
 		cardname, cardnum, rarity = title.split(" - ")
 		if cardnum[-1].isdigit():
 			cardnum = cardnum + rarity[0]
-		cardnum = re.findall(r'[0-9]-[0-9]{3}[A-Z]', cardnum)[0]
+		cardnum = re.findall(r'([0-9]|[A-Z]{2})-[0-9]{3}[A-Z]?', cardnum)[0]
 		if "Foil" in title.split(" - ")[2]:
 			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], tag.find(class_="quantity_text").text > 0, True)
 		else:
