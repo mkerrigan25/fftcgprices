@@ -8,10 +8,11 @@ def get_db():
     db = client.fftcg
     return db
 
-def add_card(db, cardnum, price, link):
-    db.cards.find_and_modify(
-    	{"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "trollandtoad.com"}}}, 
-    	{"$set": {"stores.$._id" : "trollandtoad.com", "stores.$.price" : price, "stores.$.link": link}} )
+def add_card(db, cardnum, price, link, instock, foil=False):
+	cardtype = "nonfoil"
+	if foil:
+		cardtype = "foil"
+	db.cards.find_and_modify({"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "trollandtoad.com"}}},{"$set": {"stores.$."+cardtype+".price" : price, "stores.$."+cardtype+".link": link, "stores.$."+cardtype+".instock": instock}} )
 
 db = get_db()
 response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10283.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
@@ -23,14 +24,14 @@ for tag in divTag:
 	imgTag = tag.find(class_="cat_result_image_wrapper")
 	title = imgTag.find('img')['alt']
 	if len(title.split(" - ")) > 1:
+		cardname, cardnum, rarity = title.split(" - ")
+		if cardnum[-1].isdigit():
+			cardnum = cardnum + rarity[0]
+		cardnum = re.findall(r'[0-9]-[0-9]{3}[A-Z]', cardnum)[0]
 		if "Foil" in title.split(" - ")[2]:
-			print("This is a foil")
+			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], tag.find(class_="quantity_text").text > 0, True)
 		else:
-			cardname, cardnum, rarity = title.split(" - ")
-			if cardnum[-1].isdigit():
-				cardnum = cardnum + rarity[0]
-			cardnum = re.findall(r'[0-9]-[0-9]{3}[A-Z]', cardnum)[0]
-			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'])
+			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], tag.find(class_="quantity_text").text > 0)
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])

@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 
 def get_db():
     from pymongo import MongoClient
-	#client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
-    client = MongoClient('localhost:27017')
+	client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
+    #client = MongoClient('localhost:27017')
     db = client.fftcg
     return db
 
@@ -22,9 +22,9 @@ def add_card(db, cardname, cardnum):
 	    }, upsert=True)
 
 db = get_db()
-#response = requests.get("http://final-fantasy-card-game.wikia.com/wiki/Opus_I_Collection")
+response = requests.get("http://final-fantasy-card-game.wikia.com/wiki/Opus_I_Collection")
 #response = requests.get("http://final-fantasy-card-game.wikia.com/wiki/Opus_II_Collection")
-response = requests.get("http://final-fantasy-card-game.wikia.com/wiki/Opus_III_Collection")
+#response = requests.get("http://final-fantasy-card-game.wikia.com/wiki/Opus_III_Collection")
 
 html = response.text
 soup = BeautifulSoup(html, 'html.parser')

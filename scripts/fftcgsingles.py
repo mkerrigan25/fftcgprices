@@ -8,10 +8,11 @@ def get_db():
     db = client.fftcg
     return db
 
-def add_card(db, cardnum, price, link):
-    db.cards.find_and_modify(
-    	{"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "fftcgsingles.co.uk"}}}, 
-    	{"$set": {"stores.$._id" : "fftcgsingles.co.uk", "stores.$.price" : price , "stores.$.link": link}} )
+def add_card(db, cardnum, price, link, instock, foil=False):
+	cardtype = "nonfoil"
+	if foil:
+		cardtype = "foil"
+	db.cards.find_and_modify({"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "fftcgsingles.co.uk"}}},{"$set": {"stores.$."+cardtype+".price" : price, "stores.$."+cardtype+".link": link, "stores.$."+cardtype+".instock": instock}} )
 
 db = get_db()
 response = requests.get("https://fftcgsingles.co.uk/collections/all")
@@ -31,14 +32,15 @@ divTag = soup.find_all(class_="grid-view-item")
 for tag in divTag:
 	if tag.find('img')['alt'] and "-" in tag.find('img')['alt'] :
 		name =tag.find('img')['alt']
+		foil = False
 		if "FOIL" in name:
-			print("this is a foil")
-		else:	
-			name=name.split(" ", 1)
-			print(name)
-			add_card(db, name[0], tag.find(class_="product-price__price").text, tag.find('a')['href'])
-			print(tag.find(class_="product-price__price").text)
-			print(tag.find('a')['href'])
-			print(tag.find('img')['src'])
-			if tag.find(class_="product-price__sold-out"):
-				print(tag.find(class_="product-price__sold-out"))
+			foil = True
+		instock = True
+		if tag.find(class_="product-price__sold-out"):
+			instock = False
+		name=name.split(" ", 1)
+		print(name)
+		add_card(db, name[0], tag.find(class_="product-price__price").text, tag.find('a')['href'], instock, foil)
+		#print(tag.find(class_="product-price__price").text)
+		#print(tag.find('a')['href'])
+		#print(tag.find('img')['src'])
