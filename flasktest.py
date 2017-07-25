@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 import jinja2 
 import os
 
@@ -21,8 +21,10 @@ def index():
 	results=db.cards.find()
 
 	db.close
+	css_url = url_for('static', filename='css/style.css')
+	js_url = url_for('static', filename='js/main.js')
 	path="views/test_tpl.html"
-	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results }
+	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results, "css_url":css_url, "js_url": js_url }
 	outputText = render(path, context)
 	return outputText
 

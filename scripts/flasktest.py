@@ -1,5 +1,5 @@
-from flask import Flask
-import jinja2 
+from flask import Flask, url_for
+import jinja2
 import os
 
 def get_db():
@@ -22,7 +22,10 @@ def index():
 
 	db.close
 	path="../views/test_tpl.html"
-	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results }
+	css_url = url_for('static', filename='css/style.css')
+	print(css_url + "           hieoieoeh")
+	js_url = url_for('static', filename='js/main.js')
+	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results, "css_url": css_url, "js_url": js_url }
 	outputText = render(path, context)
 	return outputText
 
