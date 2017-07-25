@@ -11,7 +11,7 @@ def get_db():
 def add_card(db, cardnum, price, link):
     db.cards.find_and_modify(
     	{"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "fftcgsingles.co.uk"}}}, 
-    	{"$set": {"stores.$._id" : "fftcgsingles.co.uk", "stores.$.price" : price}, "stores.$.link": link} )
+    	{"$set": {"stores.$._id" : "fftcgsingles.co.uk", "stores.$.price" : price , "stores.$.link": link}} )
 
 db = get_db()
 response = requests.get("https://fftcgsingles.co.uk/collections/all")
