@@ -6,20 +6,23 @@
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}" />
 
-  <script type="text/javascript" src="jquery-1.8.3.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="{{js_url}}"></script>
   <link rel="stylesheet" href="{{css_url}}"></head>
 
 <body>
 
 <div id="content">
-<input type="text" id="search" onkeyup="search()" placeholder="Search for names..">
+<input type="text" id="search" placeholder="press enter to search">
 	<table id="table"> 
 		<tr>  
 			<th>card name</th> 
 			<th>card num</th> 
 			<th>trollandtoad.com</th> 
-			<th>fftcgsingles.co.uk</th> 
+			<th>trollandtoad foil</th>
+			<th>fftcgsingles.co.uk</th>
+			<th>fftcgsingles foil</th>
+			<th>image</th>
 		</tr>
 
   		{% for r in results %}
@@ -29,15 +32,24 @@
 				{% for store in r.stores %}
 					
 					<td>
-					{%	if store.price %}
-						<a href="http://www.{{store._id + store.link}}">
-						{{  store.price }}
+					{%	if store.nonfoil %}
+						{%	if store.nonfoil.price %}
+						<a href="http://www.{{store._id + store.nonfoil.link}}">
+						{{  store.nonfoil.price }}
 						{% endif %}
+					{% endif %}
 					</td>
-					
+					<td>
+					{%	if store.foil %}
+						{%	if store.foil.price %}
+						<a href="http://www.{{store._id + store.foil.link}}">
+						{{  store.foil.price }}
+						{% endif %}
+					{% endif %}
+					</td>
 
 				{% endfor %}
-
+				<td><img src="http://i.imgur.com/VOnMbkd.jpg" alt="image placeholder " style="width:95px;height:114px;"></td>
 			</tr>
 		{% endfor %}
 
