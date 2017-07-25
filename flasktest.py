@@ -21,7 +21,7 @@ def index():
 	results=db.cards.find()
 
 	db.close
-	path="../views/test_tpl.html"
+	path="views/test_tpl.html"
 	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results }
 	outputText = render(path, context)
 	return outputText
