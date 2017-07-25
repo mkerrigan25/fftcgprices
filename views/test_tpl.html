@@ -5,24 +5,51 @@
 
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}" />
-</head>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="{{js_url}}"></script>
+  <link rel="stylesheet" href="{{css_url}}"></head>
 
 <body>
 
 <div id="content">
-	<table style= "width=100%"> 
+<input type="text" id="search" placeholder="press enter to search">
+	<table id="table"> 
 		<tr>  
-			<th>sie</th> 
 			<th>card name</th> 
 			<th>card num</th> 
-			<th>id</th>
+			<th>trollandtoad.com</th> 
+			<th>trollandtoad foil</th>
+			<th>fftcgsingles.co.uk</th>
+			<th>fftcgsingles foil</th>
+			<th>image</th>
 		</tr>
 
   		{% for r in results %}
 			<tr>
-				<td>{{  r.site  }}</td>
 				<td> {{ r.cardname  }}</td>
 				<td>{{  r.cardnum }}</td>
+				{% for store in r.stores %}
+					
+					<td>
+					{%	if store.nonfoil %}
+						{%	if store.nonfoil.price %}
+						<a href="http://www.{{store._id + store.nonfoil.link}}">
+						{{  store.nonfoil.price }}
+						{% endif %}
+					{% endif %}
+					</td>
+					<td>
+					{%	if store.foil %}
+						{%	if store.foil.price %}
+						<a href="http://www.{{store._id + store.foil.link}}">
+						{{  store.foil.price }}
+						{% endif %}
+					{% endif %}
+					</td>
+
+				{% endfor %}
+				<td><img src="http://i.imgur.com/VOnMbkd.jpg" alt="image placeholder " style="width:95px;height:114px;"></td>
 			</tr>
 		{% endfor %}
 
