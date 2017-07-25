@@ -12,17 +12,28 @@
 <div id="content">
 	<table style= "width=100%"> 
 		<tr>  
-			<th>sie</th> 
 			<th>card name</th> 
 			<th>card num</th> 
-			<th>id</th>
+			<th>trollandtoad.com</th> 
+			<th>fftcgsingles.co.uk</th> 
 		</tr>
 
   		{% for r in results %}
 			<tr>
-				<td>{{  r.site  }}</td>
 				<td> {{ r.cardname  }}</td>
 				<td>{{  r.cardnum }}</td>
+				{% for store in r.stores %}
+					
+					<td>
+					{%	if store.price %}
+						<a href="http://www.{{store._id + store.link}}">
+						{{  store.price }}
+						{% endif %}
+					</td>
+					
+
+				{% endfor %}
+
 			</tr>
 		{% endfor %}
 
