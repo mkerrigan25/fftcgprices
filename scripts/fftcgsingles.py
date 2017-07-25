@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 
 def get_db():
     from pymongo import MongoClient
-    #client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
-    client = MongoClient('localhost:27017')
+    client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
+    #client = MongoClient('localhost:27017')
     db = client.fftcg
     return db
 
