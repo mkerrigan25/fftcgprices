@@ -8,10 +8,10 @@ def get_db():
     db = client.fftcg
     return db
 
-def add_card(db, cardnum, price):
+def add_card(db, cardnum, price, link):
     db.cards.find_and_modify(
     	{"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "fftcgsingles.co.uk"}}}, 
-    	{"$set": {"stores.$._id" : "trollandtoad.com", "stores.$.price" : price}} )
+    	{"$set": {"stores.$._id" : "fftcgsingles.co.uk", "stores.$.price" : price}, "stores.$.link": link} )
 
 db = get_db()
 response = requests.get("https://fftcgsingles.co.uk/collections/all")
@@ -36,7 +36,7 @@ for tag in divTag:
 		else:	
 			name=name.split(" ", 1)
 			print(name)
-			add_card(db, name[0], tag.find(class_="product-price__price").text)
+			add_card(db, name[0], tag.find(class_="product-price__price").text, tag.find('a')['href'])
 			print(tag.find(class_="product-price__price").text)
 			print(tag.find('a')['href'])
 			print(tag.find('img')['src'])
