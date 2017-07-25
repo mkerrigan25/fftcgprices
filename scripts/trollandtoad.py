@@ -8,8 +8,10 @@ def get_db():
     db = client.fftcg
     return db
 
-def add_card(db, cardnum):
-    db.cards.update({"cardnum" : cardnum}, {"$set": {"cardnum" : cardnum, "store" : "trollandtoad.com"} }, upsert=True)
+def add_card(db, cardnum, price):
+    db.cards.find_and_modify(
+    	{"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "trollandtoad.com"}}}, 
+    	{"$set": {"stores.$._id" : "trollandtoad.com", "stores.$.price" : price}} )
 
 db = get_db()
 response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10283.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
@@ -28,7 +30,7 @@ for tag in divTag:
 			if cardnum[-1].isdigit():
 				cardnum = cardnum + rarity[0]
 			cardnum = re.findall(r'[0-9]-[0-9]{3}[A-Z]', cardnum)[0]
-			add_card(db, cardnum)
+			add_card(db, cardnum, tag.find(class_="price_text").text)
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])
