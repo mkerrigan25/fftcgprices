@@ -21,10 +21,15 @@ def index():
 	results=db.cards.find()
 
 	db.close
+
+	
+	bsc_url = url_for('static', filename='css/bootstrap.min.css')
 	css_url = url_for('static', filename='css/style.css')
+	bsj_url = url_for('static', filename='js/jbootstrap.min.js')
+	jquery_url = url_for('static', filename='js/jquery-3.2.1.min.js')
 	js_url = url_for('static', filename='js/main.js')
 	path="views/test_tpl.html"
-	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results, "css_url":css_url, "js_url": js_url }
+	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results, "css_url":css_url, "bsc_url": bsc_url, "js_url": js_url, "jquery_url":jquery_url, "bsj_url": bsj_url}
 	outputText = render(path, context)
 	return outputText
 
