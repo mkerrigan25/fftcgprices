@@ -5,3 +5,8 @@ table, th, td {
 table {
 	width:100%;
 }
+
+h2{
+	text-align: center;
+	color: pink;
+}

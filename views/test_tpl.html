@@ -13,8 +13,10 @@
   <link rel="stylesheet" href="{{css_url}}">
 </head>
 
-<h2>FFTCG Price Search</h2>
-<input type="text" id="search" placeholder="press enter to search">
+<h2 style="text-align: center">FFTCG Price Search </h2>
+<div style="align: center ">
+	<input type="text" id="search" placeholder="press enter to search" style="width: 300px; margin:0px auto; display:block;" >
+</div>
 <div class="container">
   	<div class="row">
     	<div class="col-xs-12">
@@ -56,13 +58,13 @@
 									</td>
 
 								{% endfor %}
-								<td><img src="http://i.imgur.com/VOnMbkd.jpg" alt="image placeholder " style="width:95px;height:114px;"></td>
+								<td><img src="{{ image_path+r.cardnum+'.jpg' }}" alt="image placeholder " style="width:100px;height:140px;"></td>
 							</tr>
 						{% endfor %}
 					</tbody>
 					<tfoot>
 						<tr>
-				            <td colspan="5" class="text-center">Footer text</td>
+				            <td colspan="5" class="text-center"></td>
 				        </tr>
 	          		</tfoot>
 	    		</table>

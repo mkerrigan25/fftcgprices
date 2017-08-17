@@ -1,4 +1,6 @@
 import requests
+import os
+import urllib.request
 from bs4 import BeautifulSoup
 
 def get_db():
@@ -39,6 +41,13 @@ for tag in divTag:
 		if tag.find(class_="product-price__sold-out"):
 			instock = False
 		name=name.split(" ", 1)
+		filename=os.path.join("../static/images/",name[0]+".jpg")
+		if os.path.exists(filename):
+			print("exists") 
+			
+		else:
+			imgUrl = tag.find('img')['src']
+			urllib.request.urlretrieve("https:"+imgUrl, filename)
 		print(name)
 		add_card(db, name[0], tag.find(class_="product-price__price").text, tag.find('a')['href'], instock, foil)
 		#print(tag.find(class_="product-price__price").text)

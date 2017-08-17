@@ -1,4 +1,6 @@
 import requests, re
+import os
+import urllib.request
 from bs4 import BeautifulSoup
 
 def get_db():
@@ -31,11 +33,19 @@ for tag in divTag:
 			cardnum = re.findall(r'[0-9]-[0-9]{3}[A-Z]', cardnum)[0]
 		except IndexError:
 			cardnum = re.findall(r'[A-Z]{2}-[0-9]{3}', cardnum)[0]
-		print cardnum
+		print(cardnum)
+		filename=os.path.join("../static/images/",cardnum++".jpg")
+		if os.path.exists(filename):
+			print("exists") 
+			
+		elif tag.find('img')['src']:
+			imgUrl = tag.find('img')['src']
+			urllib.request.urlretrieve(imgUrl, filename)
+		quantity = int(re.sub('[^0-9]','', tag.find(class_="quantity_text").text))
 		if "Foil" in title.split(" - ")[2]:
-			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], tag.find(class_="quantity_text").text > 0, True)
+			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0, True)
 		else:
-			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], tag.find(class_="quantity_text").text > 0)
+			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])

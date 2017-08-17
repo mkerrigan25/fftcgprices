@@ -28,8 +28,10 @@ def index():
 	bsj_url = url_for('static', filename='js/jbootstrap.min.js')
 	jquery_url = url_for('static', filename='js/jquery-3.2.1.min.js')
 	js_url = url_for('static', filename='js/main.js')
+	image_path =url_for('static', filename='images/')
+	print(image_path)
 	path="views/test_tpl.html"
-	context= { "title" : "Test Example", "description" : "First test of jinja2.", "results": results, "css_url":css_url, "bsc_url": bsc_url, "js_url": js_url, "jquery_url":jquery_url, "bsj_url": bsj_url}
+	context= { "title" : "FFTCG Price Search", "description" : "FFTCG Price Search.", "results": results, "css_url":css_url, "bsc_url": bsc_url, "js_url": js_url, "jquery_url":jquery_url, "bsj_url": bsj_url,  "image_path":image_path}
 	outputText = render(path, context)
 	return outputText
 
