@@ -41,7 +41,7 @@ for tag in divTag:
 		if tag.find(class_="product-price__sold-out"):
 			instock = False
 		name=name.split(" ", 1)
-		filename=os.path.join("../static/images/",name[0]+".jpg")
+		filename=os.path.join("static/images/",name[0]+".jpg")
 		if os.path.exists(filename):
 			print("exists") 
 			
