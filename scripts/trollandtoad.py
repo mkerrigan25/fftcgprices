@@ -10,11 +10,24 @@ def get_db():
     db = client.fftcg
     return db
 
-def add_card(db, cardnum, price, link, instock, foil=False):
+def add_card(db, cardname, cardnum, price, link, instock, foil=False):
+	cardname= cardname.replace("FOIL", "")
 	cardtype = "nonfoil"
 	if foil:
 		cardtype = "foil"
-	db.cards.find_and_modify({"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "trollandtoad.com"}}},{"$set": {"stores.$."+cardtype+".price" : price, "stores.$."+cardtype+".link": link, "stores.$."+cardtype+".instock": instock}} )
+	if db.cards.find({"cardnum":cardnum}).count() ==0:
+		 db.cards.update(
+    	{"cardnum" : cardnum},
+	    	{"$set": 
+	    		{"cardname" : cardname, 
+	    		"cardnum" : cardnum, 
+	    		"stores" : [
+	    			{ "_id" : "trollandtoad.com" },
+	    			{ "_id" : "fftcgsingles.co.uk" }
+	    		]
+	    	} 
+	    }, upsert=True)
+	db.cards.update({"cardnum": cardnum, "stores": {"$elemMatch": {"_id": "trollandtoad.com"}}},{"$set": {"stores.$."+cardtype+".price" : price, "stores.$."+cardtype+".link": link, "stores.$."+cardtype+".instock": instock}})
 
 db = get_db()
 response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCGs/10283.html?orderBy=Alphabetical+A-Z&filterKeywords=&sois=Yes&minPrice=&maxPrice=&pageLimiter=10000&showImage=Yes")
@@ -35,17 +48,17 @@ for tag in divTag:
 			cardnum = re.findall(r'[A-Z]{2}-[0-9]{3}', cardnum)[0]
 		print(cardnum)
 		filename=os.path.join("static/images/",cardnum+".jpg")
-		if os.path.exists(filename):
-			print("exists") 
-			
-		elif tag.find('img')['src']:
-			imgUrl = tag.find('img')['src']
-			urllib.request.urlretrieve(imgUrl, filename)
+		if not os.path.exists(filename):
+			if tag.find('img')['src']:
+				imgUrl = tag.find('img')['src']
+				urllib.request.urlretrieve(imgUrl, filename)
 		quantity = int(re.sub('[^0-9]','', tag.find(class_="quantity_text").text))
+		print(tag.find('a')['href'])
 		if "Foil" in title.split(" - ")[2]:
-			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0, True)
+			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0, True)
 		else:
-			add_card(db, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
+ 			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
+ 		db.cards.sort("cardnum", -1)
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])
