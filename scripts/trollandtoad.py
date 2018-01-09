@@ -58,7 +58,7 @@ for tag in divTag:
 			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0, True)
 		else:
  			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
- 		db.cards.sort("cardnum", -1)
+ 		
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])
