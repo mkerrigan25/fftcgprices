@@ -18,7 +18,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 	db=get_db()
-	results=db.cards.find()
+	results=db.cards.find().sort("cardnum", 1)
 
 	db.close
 

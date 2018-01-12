@@ -34,7 +34,6 @@ response = requests.get("http://www.trollandtoad.com/Force-of-Will-and-Other-CCG
 html = response.text
 soup = BeautifulSoup(html, 'html.parser')
 divTag = soup.find_all(class_="cat_result_wrapper")
-
 for tag in divTag:
 	imgTag = tag.find(class_="cat_result_image_wrapper")
 	title = imgTag.find('img')['alt']
@@ -58,7 +57,7 @@ for tag in divTag:
 			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0, True)
 		else:
  			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
- 		
+
 			#print(imgTag.find('img')['alt'])
 			#print(imgTag.find('a')['href'])
 			#print(imgTag.find('img')['src'])
