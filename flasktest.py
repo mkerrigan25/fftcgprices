@@ -4,7 +4,7 @@ import os
 
 def get_db():
     from pymongo import MongoClient
-    client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
+    client =#db stuff
     db = client.fftcg
     return db
 def render(tpl_path, context):
