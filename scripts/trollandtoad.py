@@ -46,7 +46,7 @@ for tag in divTag:
 		except IndexError:
 			cardnum = re.findall(r'[A-Z]{2}-[0-9]{3}', cardnum)[0]
 		print(cardnum)
-		filename=os.path.join("static/images/",cardnum+".jpg")
+		filename=os.path.join("static/images/"+cardnum+".jpg")
 		if not os.path.exists(filename):
 			if tag.find('img')['src']:
 				imgUrl = tag.find('img')['src']
