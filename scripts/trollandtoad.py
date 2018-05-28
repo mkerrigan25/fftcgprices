@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 
 def get_db():
     from pymongo import MongoClient
-    client = MongoClient('mongodb://fftcgscript:nextat765@ds161022.mlab.com:61022/fftcg')
-    #client = MongoClient('localhost:27017')
+    client = #dv stuff
     db = client.fftcg
     return db
 
@@ -58,9 +57,5 @@ for tag in divTag:
 		else:
  			add_card(db, cardname, cardnum, tag.find(class_="price_text").text, imgTag.find('a')['href'], quantity > 0)
 
-			#print(imgTag.find('img')['alt'])
-			#print(imgTag.find('a')['href'])
-			#print(imgTag.find('img')['src'])
-			#print(tag.find(class_="quantity_text").text)
-			#print(tag.find(class_="price_text").text)
+		
 		
